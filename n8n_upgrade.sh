@@ -27,7 +27,14 @@ done
 
 echo ">>> checking if version $version of n8n docker image exists..."
 
-docker pull docker.n8n.io/n8nio/n8n:$version
+if docker pull docker.n8n.io/n8nio/n8n:$version ; then
+    echo ">>> version exists"
+else
+    echo ">> version $version not found. aborting upgrade."
+    exit 1
+fi
+
+sleep 3
 
 sed -i "s/^N8N_IMAGE_VERSION=.*/N8N_IMAGE_VERSION=$version/" "$env_file"
 
